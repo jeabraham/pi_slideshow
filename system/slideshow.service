@@ -1,0 +1,18 @@
+[Unit]
+Description=Slideshow Server
+After=network.target
+
+[Service]
+ExecStart=/home/ubuntu/slideshow/server/slideshow-server
+WorkingDirectory=/home/ubuntu/slideshow
+Restart=always
+User=ubuntu
+Group=ubuntu
+Environment=NODE_ENV=production
+TimeoutSec=30
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=slideshow
+
+[Install]
+WantedBy=multi-user.target

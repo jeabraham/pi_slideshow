@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slideshow</title>
+  <style>
+    body { margin: 0; background: black; }
+    img { width: 100vw; height: 100vh; object-fit: contain; }
+  </style>
+</head>
+<body>
+  <img id="slide">
+  <script>
+    async function fetchSlides() {
+      const response = await fetch('http://localhost:3000/getSlides');
+      const slides = await response.json();
+      return slides.map(filename => 'images/' + filename);
+    }
+
+    async function startSlideshow() {
+      const slides = await fetchSlides();
+      let index = 0;
+      const img = document.getElementById('slide');
+
+      function showNext() {
+        img.src = slides[index];
+        index = (index + 1) % slides.length;
+      }
+
+      showNext();
+      setInterval(showNext, 5000); // Change every 5 seconds
+    }
+
+    startSlideshow();
+  </script>
+</body>
+</html>
+

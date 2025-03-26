@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=Slideshow
+Exec=chromium-browser --noerrdialogs --kiosk --incognito file:///home/ubuntu/slideshow/html/index.html

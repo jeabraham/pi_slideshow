@@ -1,0 +1,14 @@
+#!/bin/bash
+
+export THIS_DIR=$(builtin cd $(dirname ${BASH_SOURCE[0]}) ; builtin pwd)
+
+export SLIDESHOW_DIR=$(builtin cd ${THIS_DIR}/.. ; builtin pwd)
+
+set -xv
+
+#####
+
+cd ${SLIDESHOW_DIR}
+
+/usr/bin/node ${SLIDESHOW_DIR}/server/slideshow-server.js
+
