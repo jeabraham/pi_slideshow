@@ -3,7 +3,12 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const imagesDirectory = path.join(__dirname, '../images');
+
+const SLIDESHOW_DIR = process.env.SLIDESHOW_DIR
+const SLIDESHOW_PORT = process.env.SLIDESHOW_PORT || 3000;
+
+
+/////
 
 function is_image (path) {
     return path.endsWith('.jpg') ||
@@ -14,10 +19,12 @@ function is_image (path) {
 
 /////
 
-app.use(express.static('/images'));
+app.get(['/','/index.html'],(req,res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+})
 
-app.get('/getSlides', (req, res) => {
-    fs.readdir(imagesDirectory, (err, files) => {
+app.get('/getImageList', (req, res) => {
+    fs.readdir(path.join(SLIDESHOW_DIR,"images"), (err, files) => {
         if (err) {
             res.status(500).send('Error reading directory');
             return;
@@ -30,7 +37,11 @@ app.get('/getSlides', (req, res) => {
     });
 });
 
-const port = 3000;
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+app.use('/images', express.static(path.join(SLIDESHOW_DIR, 'images')));
+
+/////
+
+app.listen(SLIDESHOW_PORT, () => {
+    console.log(`Server running at http://localhost:${SLIDESHOW_PORT}`);
+    console.log(`Slideshow directory set to ${SLIDESHOW_DIR}`); 
 });

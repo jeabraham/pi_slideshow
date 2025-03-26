@@ -2,13 +2,18 @@
 
 export THIS_DIR=$(builtin cd $(dirname ${BASH_SOURCE[0]}) ; builtin pwd)
 
-export SLIDESHOW_DIR=$(builtin cd ${THIS_DIR}/.. ; builtin pwd)
-
 set -xv
+
+#####
+
+if [[ "${SLIDESHOW_DIR}" = "" ]]
+then
+    export SLIDESHOW_DIR=$(builtin cd ${THIS_DIR}/.. ; builtin pwd)
+    source ./setup.env
+fi
 
 #####
 
 cd ${SLIDESHOW_DIR}
 
 /usr/bin/node ${SLIDESHOW_DIR}/server/slideshow-server.js
-

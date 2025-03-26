@@ -5,15 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Slideshow</title>
   <style>
-    body { margin: 0; background: black; }
-    img { width: 100vw; height: 100vh; object-fit: contain; }
+    body {
+	margin: 0;
+	background: black;
+    }
+    img {
+	width: 100vw;
+	height: 100vh;
+	object-fit: contain;
+    }
   </style>
 </head>
 <body>
-  <img id="slide">
+
+  <img id="slide"/>
+
   <script>
     async function fetchSlides() {
-      const response = await fetch('http://localhost:3000/getSlides');
+      const response = await fetch('http://localhost:3000/getImageList');
       const slides = await response.json();
       return slides.map(filename => 'images/' + filename);
     }
