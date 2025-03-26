@@ -13,6 +13,14 @@ Usage:
 
 - open your web browser to "http://localhost:3000"
 
+- disable screen saver:
+
+::
+
+   cd slideshow
+   source ./setup.env
+   make _user_screen_saver_disable
+  
 If you need to restart the server: ``make _server_restart``.
 
 

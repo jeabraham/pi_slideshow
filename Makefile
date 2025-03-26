@@ -4,6 +4,10 @@
 
 _default:
 
+ifndef SLIDESHOW_DIR
+  $(error "SLIDESHOW_DIR unset; source ./setup.env")
+endif
+
 #####
 
 _apt-get-install:
@@ -77,6 +81,18 @@ _user_install:
 #
 	mkdir -p ~/.config/autostart
 	install -m 555 ./system/slideshow.desktop ~/.config/autostart
+
+# https://claude.ai/chat/94bc71fc-fd7a-48d1-b463-2c09be5f651f
+#
+_user_screen_saver_disable:
+# Disable screen saver
+	xset s off
+# Disable DPMS
+	xset -dpms
+# Don't blank the screen
+	xset s noblank
+#
+	xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/dpms-enabled -s false
 
 #####
 
