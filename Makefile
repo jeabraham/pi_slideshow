@@ -13,8 +13,15 @@ _apt-get-install:
 	  emacs-nox \
 	  nodejs \
 	  npm \
+	  raspi-config \
 	  x11-xserver-utils \
 	  xubuntu-desktop
+
+#_systemctl:
+#	sudo systemctl disable apparmor
+#	sudo systemctl mask
+#	sudo systemctl disable cups
+#	sudo systemctl mask cups
 
 #####
 
@@ -52,3 +59,13 @@ _systemd_restart:
 	sudo systemctl restart slideshow
 	sleep 3
 	sudo systemctl status  slideshow
+
+#####
+
+# https://askubuntu.com/questions/1501903/x11-session-fails-to-start-on-arm64-ubuntu-23-10-on-raspberry-pi-5
+#
+./system/gldriver-test_0.15_all.deb:
+	curl \
+	  --output "${@}" \
+	"https://archive.raspberrypi.org/debian/pool/main/g/gldriver-test/gldriver-test_0.15_all.deb"
+
