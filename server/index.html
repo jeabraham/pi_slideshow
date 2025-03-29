@@ -1,48 +1,79 @@
-<!DOCTYPE html>
+xsxc<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slideshow</title>
+  <title>Sean and Heather Slideshow</title>
   <style>
     body {
 	margin: 0;
 	background: black;
+	overflow: hidden;
     }
-    img {
+    .slideshow-container {
+	position: relative;
 	width: 100vw;
 	height: 100vh;
+    }
+    .slide {
+	position: absolute;
+	width: 100%;
+	height: 100%;
 	object-fit: contain;
+	opacity: 0;
+	transition: opacity 1s ease-in-out;
+    }
+    .slide.active {
+	opacity: 1;
     }
   </style>
 </head>
 <body>
-
-  <img id="slide"/>
+  <div class="slideshow-container">
+    <img class="slide" id="slide1">
+    <img class="slide" id="slide2">
+  </div>
 
   <script>
-    async function fetchSlides() {
-      const response = await fetch('http://localhost:3000/getImageList');
-      const slides = await response.json();
-      return slides.map(filename => 'images/' + filename);
+    
+    let current = 0
+    let slideEls = [document.getElementById("slide1"), document.getElementById("slide2")];
+    let imageList = []
+    
+    async function fetchImages() {
+	try {
+	    const response = await fetch('http://localhost:3000/getImageList');
+	    imageList = await response.json();
+	    imageList = imageList.filter(name => name.match(/\.jpg$/i)).sort();
+	    if (imageList.length > 0) startSlideshow();
+	} catch (err) {
+	    console.error("Error fetching image list:", err);
+	}
     }
 
-    async function startSlideshow() {
-      const slides = await fetchSlides();
-      let index = 0;
-      const img = document.getElementById('slide');
+    function startSlideshow() {
+	let index = 0;
+	let active = 0;
+	const showNext = () => {
+	    const next = (active + 1) % 2;
+	    slideEls[next].src = `http://localhost:3000/images/${imageList[index]}`;
+	    slideEls[active].classList.remove("active");
+	    slideEls[next].classList.add("active");
 
-      function showNext() {
-        img.src = slides[index];
-        index = (index + 1) % slides.length;
-      }
+	    active = next;
+	    index = (index + 1) % imageList.length;
+	};
 
-      showNext();
-      setInterval(showNext, 5000); // Change every 5 seconds
+	// Preload first image before starting
+	slideEls[active].src = `http://localhost:3000/images/${imageList[0]}`;
+	slideEls[active].classList.add("active");
+	index++
+
+	setInterval(showNext, 5000); // 5 seconds per slide
     }
 
-    startSlideshow();
-  </script>
+    fetchImages();
+   </script>
 </body>
 </html>
 
